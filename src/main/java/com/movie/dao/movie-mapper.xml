@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movie.dao.movie-mapper">
+	<select id="movieAllData" resultType="Movie">
+		SELECT mno,title,poster
+		FROM movieInfo
+	</select>
+	<select id="theaterNumber" resultType="String" parameterType="int">
+		SELECT theater_no FROM movieInfo
+		WHERE mno=#{mno}
+	</select>
+	<select id="theaterAllData" resultType="Theater" parameterType="int">
+		SELECT tno,theater,loc
+		FROM theaterInfo
+		WHERE tno=#{tno}
+	</select>
+	<select id="timeAllData" resultType="Time" parameterType="int">
+		SELECT
+		tno,time
+		FROM timeInfo
+		WHERE tno=#{tno}
+	</select>
+	<select id="reserveDateData" resultType="String" parameterType="int">
+		SELECT timeno
+		FROM reserveDate
+		WHERE no=#{no}
+	</select>
+	<select id="reserveAdminAllData" resultType="Reserve">
+		SELECT * FROM
+		reserve
+		ORDER BY no DESC
+	</select>
+	<select id="reserveUserAllData" resultType="Reserve"
+		parameterType="String">
+		SELECT * FROM reserve
+		WHERE id=#{id}
+	</select>
+	<update id="reserveCheckUpdate" parameterType="int">
+		UPDATE reserve SET
+		reserve_check=1
+		WHERE no=#{no}
+	</update>
+	<insert id="reserveInsert" parameterType="Reserve">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(no)+1,1) as no FROM reserve
+		</selectKey>
+		INSERT INTO reserve VALUES(#{no},#{id},
+		#{title},#{theater},#{day},#{inwon},#{price},0,#{time})
+	</insert>
+</mapper>
+
+
